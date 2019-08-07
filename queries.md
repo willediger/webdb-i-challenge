@@ -19,6 +19,13 @@ FROM (
 ) AS Subset
 ORDER BY OrderDate DESC;
 
+<!-- - list first 10 orders placed, sorted descending by the order date. The order with date 1997-02-12 should be at the top. -->
+<!-- this indicates that the prompt is actually asking you to return the _last 10 orders placed_ rather than the _first 10_, as you're sorting descending by OrderDate. this query would be: -->
+SELECT o.*
+FROM Orders AS o
+ORDER BY OrderDate DESC
+LIMIT 10
+
 ## Find all customers that live in London, Madrid, or Brazil
 SELECT c.*
 FROM Customers AS c

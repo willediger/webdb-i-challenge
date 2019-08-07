@@ -3,15 +3,28 @@ const db = require("./accounts-model.js");
 
 const router = express.Router();
 
-router.get("/", async (req, res) => {
-  const accounts = await db.get();
-  if (accounts) {
-    res.status(200).json(accounts);
+router.get("/", async (req, res, next) => {
+  let accounts;
+  if (req.query && Object.keys(req.query).length > 0) {
+    accounts = await db.getByQuery(req.query);
+    if (accounts) {
+      res.status(200).json(accounts);
+    } else {
+      next({
+        status: 500,
+        message: "The accounts could not be retrieved."
+      });
+    }
   } else {
-    next({
-      status: 500,
-      message: "The accounts could not be retrieved."
-    });
+    accounts = await db.get();
+    if (accounts) {
+      res.status(200).json(accounts);
+    } else {
+      next({
+        status: 500,
+        message: "The accounts could not be retrieved."
+      });
+    }
   }
 });
 

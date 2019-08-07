@@ -1,6 +1,21 @@
 const db = require("../data/dbConfig.js");
 
 module.exports = {
+  getByQuery: function(query) {
+    if (query.sortby) {
+      if (query.limit) {
+        return db("accounts")
+          .orderBy(query.sortby, query.sortdir)
+          .limit(query.limit);
+      } else {
+        return db("accounts").orderBy(query.sortby, query.sortdir);
+      }
+    } else if (query.limit) {
+      return db("accounts").limit(query.limit);
+    } else {
+      return null;
+    }
+  },
   get: function(id) {
     let query = db("accounts");
 
